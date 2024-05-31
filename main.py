@@ -3,6 +3,8 @@ import PyPDF2
 import streamlit as st
 import pytesseract
 import cv2
+import request
+import json
 from PIL import Image
 from io import StringIO
 from transformers import pipeline
@@ -14,9 +16,30 @@ from langchain.embeddings import HuggingFaceEmbeddings
 from langchain.text_splitter import RecursiveCharacterTextSplitter
 from langchain.callbacks.streaming_stdout import StreamingStdOutCallbackHandler
 from langchain.callbacks.base import CallbackManager
+from starlette.requests import Request
 
 st.set_page_config(page_title="Busqueda", page_icon=':shark:')
+@st.server_route("/v1/saveImage", methods=["POST"])
+def save_text_from_image(req Request):
+    input_json = await req.body()
+    input_data = json.loads(input_json)
+    output_data = input_data
+
+    return json.dumps(output_data)
 '''
+@st.server_route("/v1/getResponse", methods=["POST"])
+def getResponseFromImage():
+    input_json = st.server_request.get_json()
+    salida2 = 'Salida web service 2'
+
+    return salida2
+'''
+'''
+url = 'www.google.com'
+input_data = {
+    'param2' : 'valor1'
+    'param2' : 'valor2'
+}
 @st.cache_data
 def extract_text_from_image(file_path):
     if os.path.isfile(file_path):
@@ -37,9 +60,8 @@ def create_retriever(_embeddings, splits, retriever_type):
 
     return retriever
   '''
-
+    
 def main():
-
     st.write(
         f"""
         <div style="display: flex; align-items: center; margin-left: 0;">
@@ -49,9 +71,9 @@ def main():
         """,
         unsafe_allow_html=True,
     )
-
-    st.sidebar.title("Menú")
+    st.write ('Prueba de la demo')
 '''
+    st.sidebar.title("Menú")
     folder_path = "documentos"
 
     # Nueva opción para seleccionar archivos PDF dentro de la carpeta
