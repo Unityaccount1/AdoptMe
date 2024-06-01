@@ -51,7 +51,11 @@ async def uploadImage(InputImage: InputJsonImage):
     InputImage.id = len(jsonObjectImages) + 1
     jsonObjectImages.append(InputImage)
     message = "Imagen cargada correctamente"
-    return message
+    message = "Imagen cargada correctamente"
+    jsonOutputMessage = {
+        "message": message
+    }
+    return jsonOutputMessage
     
 @app.post("/v1/getResponse")
 async def uploadImage(InputConversation: InputJsonConversation):
