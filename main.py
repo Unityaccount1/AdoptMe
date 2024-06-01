@@ -1,3 +1,5 @@
+import os
+
 from time import time
 from typing import List, Optional
 
@@ -5,6 +7,8 @@ from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import FileResponse
 from pydantic import BaseModel
+from langchain.embeddings import HuggingFaceEmbeddings
+from transformers import pipeline
 
 
 class InputJsonConversation(BaseModel):
@@ -26,6 +30,7 @@ class OutputJsonUploadImage(InputJsonConversation):
     
 
 app = FastAPI()
+os.environ["HUGGINGFACEHUB_API_TOKEN"] = "HUGGINGFACEHUB_API_TOKEN"
 
 app.add_middleware(
     CORSMiddleware,
@@ -36,6 +41,7 @@ app.add_middleware(
 )
 
 jsonObjectImages=[]
+LongChainText = ""
 
 @app.middleware("http")
 async def log_middleware(request, call_next):
@@ -49,8 +55,9 @@ async def log_middleware(request, call_next):
 @app.post("/v1/uploadImage")
 async def uploadImage(InputImage: InputJsonImage):
     InputImage.id = len(jsonObjectImages) + 1
+    LongChainText = LongChainText + InputImage.description
     jsonObjectImages.append(InputImage)
-    message = "Imagen cargada correctamente"
+    
     message = "Imagen cargada correctamente"
     jsonOutputMessage = {
         "message": message
@@ -58,6 +65,22 @@ async def uploadImage(InputImage: InputJsonImage):
     return jsonOutputMessage
     
 @app.post("/v1/getResponse")
-async def uploadImage(InputConversation: InputJsonConversation):
-    message = "Mostrando el total de imagenes cargadas"
-    return jsonObjectImages
+async def getResponse(InputConversation: InputJsonConversation):
+    embeddings = HuggingFaceEmbeddings()
+    question_answering = pipeline("question-answering")
+    extracted_text = LongChainText
+    if InputConversation.message:
+        answer = question_answering(question=InputConversation.message, context=extracted_text)
+    jsonConstructor = []
+    jsonOutput = {
+        "id" : "1",
+        "fileBase64" : "",
+        "description" : answer
+        }
+    jsonConstructor.append(jsonOutput)
+    jsonOutputResponse = {
+        "output" : jsonConstructor
+        }
+    return jsonOutputResponse
+    
+    
