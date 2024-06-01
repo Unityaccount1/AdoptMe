@@ -27,8 +27,8 @@ def get_answer(imageBase64,text):
         answer = model.config.id2label[idx]
         
         return answer
-     except Exception as e:
-         return str(e)
+    except Exception as e:
+        return str(e)
 
 class InputJsonConversation(BaseModel):
     id: Optional[int] = None
@@ -100,18 +100,18 @@ async def getResponse(InputConversation: InputJsonConversation):
             "output" : jsonConstructor
         }
         return jsonOutputResponse
-     except Exception as e:
-         jsonConstructor = []
-         jsonOutput = {
+    except Exception as e:
+        jsonConstructor = []
+        jsonOutput = {
             "id" : "0",
             "fileBase64" : "",
             "description" : str(e)
             }
-         jsonConstructor.append(jsonOutput)
-         jsonOutputResponse = {
+        jsonConstructor.append(jsonOutput)
+        jsonOutputResponse = {
              "output" : jsonConstructor
          }
-         return jsonOutputResponse
+        return jsonOutputResponse
     #embeddings = HuggingFaceEmbeddings()
     #question_answering = pipeline("question-answering")
     '''
