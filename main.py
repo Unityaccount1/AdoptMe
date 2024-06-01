@@ -41,7 +41,6 @@ app.add_middleware(
 )
 
 jsonObjectImages=[]
-LongChainText = ""
 
 @app.middleware("http")
 async def log_middleware(request, call_next):
@@ -54,10 +53,8 @@ async def log_middleware(request, call_next):
 
 @app.post("/v1/uploadImage")
 async def uploadImage(InputImage: InputJsonImage):
-    text = ""
+    
     InputImage.id = len(jsonObjectImages) + 1
-    text = text + InputImage.description
-    LongChainText = text
     jsonObjectImages.append(InputImage)
     
     message = "Imagen cargada correctamente"
@@ -70,7 +67,10 @@ async def uploadImage(InputImage: InputJsonImage):
 async def getResponse(InputConversation: InputJsonConversation):
     embeddings = HuggingFaceEmbeddings()
     question_answering = pipeline("question-answering")
-    extracted_text = LongChainText
+    description = ""
+    for index,test in enumerate(jsonObjectImages):
+        description = description + " " + test.description
+    extracted_text = description
     if InputConversation.message:
         answer = question_answering(question=InputConversation.message, context=extracted_text)
     jsonConstructor = []
