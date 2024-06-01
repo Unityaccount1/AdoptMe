@@ -65,14 +65,15 @@ async def uploadImage(InputImage: InputJsonImage):
     
 @app.post("/v1/getResponse")
 async def getResponse(InputConversation: InputJsonConversation):
-    embeddings = HuggingFaceEmbeddings()
-    question_answering = pipeline("question-answering")
+    #embeddings = HuggingFaceEmbeddings()
+    #question_answering = pipeline("question-answering")
     description = ""
     for index,test in enumerate(jsonObjectImages):
         description = description + " " + test.description
     extracted_text = description
-    if InputConversation.message:
-        answer = question_answering(question=InputConversation.message, context=extracted_text)
+    #if InputConversation.message:
+    #    answer = question_answering(question=InputConversation.message, context=extracted_text)
+    answer = "Respuesta de prueba para verificar la conectividad"
     jsonConstructor = []
     jsonOutput = {
         "id" : "1",
