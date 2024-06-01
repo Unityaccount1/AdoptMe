@@ -54,8 +54,10 @@ async def log_middleware(request, call_next):
 
 @app.post("/v1/uploadImage")
 async def uploadImage(InputImage: InputJsonImage):
+    text = ""
     InputImage.id = len(jsonObjectImages) + 1
-    LongChainText = LongChainText + InputImage.description
+    text = text + InputImage.description
+    LongChainText = text
     jsonObjectImages.append(InputImage)
     
     message = "Imagen cargada correctamente"
