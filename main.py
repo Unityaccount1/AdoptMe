@@ -99,9 +99,9 @@ async def getResponse(InputConversation: InputJsonConversation):
         jsonConstructor = []
         for index,test in enumerate(jsonObjectImages):
             jsonOutput = {
-            "id" : "1",
-            "fileBase64" : "test",
-            "description" : "prueba"
+            "id" : index,
+            "fileBase64" : test.Foto,
+            "description" : test.nombreMascota + test.edadMascota + test.razonAdopcion
             }
             jsonConstructor.append(jsonOutput)
             
