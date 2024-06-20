@@ -101,7 +101,7 @@ async def getResponse(InputConversation: InputJsonConversation):
             jsonOutput = {
             "id" : index,
             "fileBase64" : test.Foto,
-            "description" : test.mascotaVacuna + test.edadMascota
+            "description" : "prueba"
             jsonConstructor.append(jsonOutput)
             }
         jsonOutputResponse = {
