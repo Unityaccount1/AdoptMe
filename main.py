@@ -33,7 +33,13 @@ def get_answer(imageBase64,text):
 #fileBase64: str = None
 #description: str = None
 '''
-
+def conversionImagen(imagen):
+    try:
+        image_bytes = base64.b64decode(imagen)
+        respuesta = "exito"
+    except Exception as e:
+        return str(e)
+        
 class InputJsonConversation(BaseModel):
     id: Optional[int] = None
     message: str
@@ -50,6 +56,7 @@ class InputJsonImage(BaseModel):
     mascotaEsteril: str
     razonAdopcion: str
     Foto: str
+    Fototexto: str
             
 
 class OutputJsonImage(InputJsonImage):
@@ -83,7 +90,7 @@ async def log_middleware(request, call_next):
 
 @app.post("/v1/uploadImage")
 async def uploadImage(InputImage: InputJsonImage):
-    
+    InputImage.Fototexto = conversionImagen(InputImage.Foto)
     jsonObjectImages.append(InputImage)
     
     message = "Datos registrados correctamente"
@@ -101,7 +108,8 @@ async def getResponse(InputConversation: InputJsonConversation):
             jsonOutput = {
             "id" : index,
             "fileBase64" : test.Foto,
-            "description" : test.nombreMascota + test.edadMascota + test.razonAdopcion
+            "description" : test.Fototexto
+            #"description" : test.nombreMascota + test.edadMascota + test.razonAdopcion
             }
             jsonConstructor.append(jsonOutput)
             
