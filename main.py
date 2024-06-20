@@ -104,14 +104,14 @@ async def getResponse(InputConversation: InputJsonConversation):
         jsonConstructor = []
         for index,test in enumerate(jsonObjectImages):
             Fototexto = conversionImagen(test.Foto)
-            if InputConversation.message in Fototexto:
-                jsonOutput = {
+            #if InputConversation.message in Fototexto:
+            jsonOutput = {
                 "id" : index,
                 "fileBase64" : test.Foto,
-                "description" : test.Fototexto
+                "description" : Fototexto
                 #"description" : test.nombreMascota + test.edadMascota + test.razonAdopcion
                 }
-                jsonConstructor.append(jsonOutput)
+            jsonConstructor.append(jsonOutput)
             
         jsonOutputResponse = {
             "output" : jsonConstructor
