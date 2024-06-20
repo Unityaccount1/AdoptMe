@@ -36,7 +36,7 @@ def get_answer(imageBase64,text):
 def conversionImagen(imagen):
     try:
         image_bytes = base64.b64decode(imagen)
-        respuesta = "exito"
+        respuesta = image_bytes
     except Exception as e:
         return str(e)
         
@@ -56,7 +56,6 @@ class InputJsonImage(BaseModel):
     mascotaEsteril: str
     razonAdopcion: str
     Foto: str
-    Fototexto: str
             
 
 class OutputJsonImage(InputJsonImage):
@@ -90,7 +89,6 @@ async def log_middleware(request, call_next):
 
 @app.post("/v1/uploadImage")
 async def uploadImage(InputImage: InputJsonImage):
-    InputImage.Fototexto = conversionImagen(InputImage.Foto)
     jsonObjectImages.append(InputImage)
     
     message = "Datos registrados correctamente"
@@ -105,13 +103,15 @@ async def getResponse(InputConversation: InputJsonConversation):
         answer = "Respuesta de prueba para verificar la conectividad"
         jsonConstructor = []
         for index,test in enumerate(jsonObjectImages):
-            jsonOutput = {
-            "id" : index,
-            "fileBase64" : test.Foto,
-            "description" : test.Fototexto
-            #"description" : test.nombreMascota + test.edadMascota + test.razonAdopcion
-            }
-            jsonConstructor.append(jsonOutput)
+            Fototexto = conversionImagen(test.Foto)
+            if InputConversation.message in Fototexto:
+                jsonOutput = {
+                "id" : index,
+                "fileBase64" : test.Foto,
+                "description" : test.Fototexto
+                #"description" : test.nombreMascota + test.edadMascota + test.razonAdopcion
+                }
+                jsonConstructor.append(jsonOutput)
             
         jsonOutputResponse = {
             "output" : jsonConstructor
