@@ -37,6 +37,7 @@ def conversionImagen(imagen):
     try:
         image_bytes = base64.b64decode(imagen)
         respuesta = image_bytes
+        return respuesta
     except Exception as e:
         return str(e)
         
@@ -100,7 +101,7 @@ async def uploadImage(InputImage: InputJsonImage):
 @app.post("/v1/getResponse")
 async def getResponse(InputConversation: InputJsonConversation):
     try:
-        answer = "Respuesta de prueba para verificar la conectividad"
+        #answer = "Respuesta de prueba para verificar la conectividad"
         jsonConstructor = []
         for index,test in enumerate(jsonObjectImages):
             Fototexto = conversionImagen(test.Foto)
