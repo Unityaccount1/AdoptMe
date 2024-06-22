@@ -44,7 +44,7 @@ def conversionImagen(imagen,infoMascota,pregunta):
             for infoP in arregloPregunta:
                 if (infoP == infoM):
                     rep = rep + 1
-        if (rep>3) :
+        if (rep>=2) :
             respuesta = "success"
         else:
             respuesta = "error"
@@ -68,6 +68,7 @@ class InputJsonImage(BaseModel):
     mascotaEsteril: str
     razonAdopcion: str
     Foto: str
+    descripcion: str
             
 
 class OutputJsonImage(InputJsonImage):
@@ -117,7 +118,7 @@ async def getResponse(InputConversation: InputJsonConversation):
         a=0
         textoTotal = ""
         for index,test in enumerate(jsonObjectImages):
-            textoDescripcion = test.mascotaEsteril + " " + test.mascotaVacuna + " " + test.nombreMascota + " " + test.edadMascota + " "+ test.razonAdopcion
+            textoDescripcion = test.mascotaEsteril + " " + test.mascotaVacuna + " " + test.nombreMascota + " " + test.edadMascota + " "+ test.razonAdopcion + test.descripcion
             valPrecision = conversionImagen(test.Foto,textoDescripcion,InputConversation.message)
             #validador: textoTotal = textoTotal + " " + valPrecision
             
