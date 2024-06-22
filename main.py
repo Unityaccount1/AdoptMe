@@ -33,10 +33,21 @@ def get_answer(imageBase64,text):
 #fileBase64: str = None
 #description: str = None
 '''
-def conversionImagen(imagen):
+def conversionImagen(imagen,infoMascota,pregunta):
     try:
-        image_bytes = base64.b64decode(imagen)
-        respuesta = image_bytes
+        #image_bytes = base64.b64decode(imagen)
+        #respuesta = image_bytes
+        arregloInfoMascota = infoMascota.split(" ")
+        arregloPregunta = pregunta.split(" ")
+        rep = 0
+        for infoM in arregloInfoMascota:
+            for infoP in arreglopregunta:
+                if (infoP == infoM):
+                    rep = rep + 1
+        if (rep>3) :
+            respuesta = "success"
+        else:
+            respuesta = "error"
         return respuesta
     except Exception as e:
         return str(e)
@@ -106,7 +117,8 @@ async def getResponse(InputConversation: InputJsonConversation):
         a=0
         for index,test in enumerate(jsonObjectImages):
             textoDescripcion = test.nombreMascota + " " + test.edadMascota + " "+ test.razonAdopcion
-            if InputConversation.message in textoDescripcion:
+            valPrecision = conversionImagen(test.Foto,textoDescripcion,InputConversation.message)
+            if (valPrecision == "success"):
                 a=a+1
                 jsonOutput = {
                     "id" : index,
