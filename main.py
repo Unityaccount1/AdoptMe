@@ -9,9 +9,9 @@ from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import FileResponse
 from pydantic import BaseModel
-from langchain.embeddings import HuggingFaceEmbeddings
-from transformers import ViltProcessor, ViltForQuestionAnswering
-from PIL import Image
+#from langchain.embeddings import HuggingFaceEmbeddings
+#from transformers import ViltProcessor, ViltForQuestionAnswering
+#from PIL import Image
 
 '''
 processor = ViltProcessor.from_pretrained("dandelin/vilt-b32-finetuned-vqa")
@@ -103,20 +103,33 @@ async def getResponse(InputConversation: InputJsonConversation):
     try:
         #answer = "Respuesta de prueba para verificar la conectividad"
         jsonConstructor = []
+        a=0
         for index,test in enumerate(jsonObjectImages):
-            #Fototexto = conversionImagen(test.Foto)
-            #if InputConversation.message in Fototexto:
+            textoDescripcion = test.nombreMascota + " " + test.edadMascota + " "+ test.razonAdopcion
+            if InputConversation.message in textoDescripcion:
+                a=a+1
+                jsonOutput = {
+                    "id" : index,
+                    "fileBase64" : test.Foto,
+                    #"description" : Fototexto
+                    "description" : "La mascota se llama: " + test.nombreMascota + ".Tiene: " + test.edadMascota + "años y la razon de su adopcion es:  "+ test.razonAdopcion
+                    }
+                jsonConstructor.append(jsonOutput)
+        if (a>=1):    
+            jsonOutputResponse = {
+                "output" : jsonConstructor
+            }
+        else:
             jsonOutput = {
-                "id" : index,
-                "fileBase64" : test.Foto,
-                #"description" : Fototexto
-                "description" : test.nombreMascota + " " + test.edadMascota + " "+ test.razonAdopcion
-                }
+                    "id" : "0",
+                    "fileBase64" : "",
+                    #"description" : Fototexto
+                    "description" : "No se encontraron registros."
+                    }
             jsonConstructor.append(jsonOutput)
-            
-        jsonOutputResponse = {
-            "output" : jsonConstructor
-        }
+            jsonOutputResponse = {
+                "output" : jsonConstructor
+            }
         return jsonOutputResponse
     except Exception as e:
         jsonConstructor = []
