@@ -41,14 +41,14 @@ def conversionImagen(imagen,infoMascota,pregunta):
         arregloPregunta = pregunta.split(" ")
         rep = 0
         for infoM in arregloInfoMascota:
-            for infoP in arreglopregunta:
+            for infoP in arregloPregunta:
                 if (infoP == infoM):
                     rep = rep + 1
         if (rep>3) :
             respuesta = "success"
         else:
             respuesta = "error"
-        return "success"
+        return respuesta
     except Exception as e:
         return str(e)
         
@@ -119,8 +119,8 @@ async def getResponse(InputConversation: InputJsonConversation):
         for index,test in enumerate(jsonObjectImages):
             textoDescripcion = test.mascotaEsteril + " " + test.mascotaVacuna + " " + test.nombreMascota + " " + test.edadMascota + " "+ test.razonAdopcion
             valPrecision = conversionImagen(test.Foto,textoDescripcion,InputConversation.message)
-            textoTotal = textoTotal + " " + valPrecision
-            '''
+            #validador: textoTotal = textoTotal + " " + valPrecision
+            
             if ("success" in valPrecision):
                 a=a+1
                 jsonOutput = {
@@ -147,8 +147,8 @@ async def getResponse(InputConversation: InputJsonConversation):
                 "output" : jsonConstructor
             }
             return jsonOutputResponse
-        '''
-        return InputConversation.message + " " + textoTotal
+        #validador
+        #return InputConversation.message + " " + textoTotal
     except Exception as e:
         jsonConstructor = []
         jsonOutput = {
