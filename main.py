@@ -127,7 +127,7 @@ async def getResponse(InputConversation: InputJsonConversation):
                     "id" : index,
                     "fileBase64" : test.Foto,
                     #"description" : Fototexto
-                    "description" : "La mascota se llama: " + test.nombreMascota + ".Tiene: " + test.edadMascota + "años y la razon de su adopcion es:  "+ test.razonAdopcion
+                    "description" : "La mascota se llama: " + test.nombreMascota + " .Tiene: " + test.edadMascota + " años y la razon de su adopcion es:  "+ test.razonAdopcion
                     }
                 jsonConstructor.append(jsonOutput)
         if (a>=1):    
