@@ -32,11 +32,11 @@ def get_answer(imageBase64,text):
         return str(e)
 #fileBase64: str = None
 #description: str = None
+#image_bytes = base64.b64decode(imagen)
+#respuesta = image_bytes
 '''
 def conversionImagen(imagen,infoMascota,pregunta):
     try:
-        #image_bytes = base64.b64decode(imagen)
-        #respuesta = image_bytes
         arregloInfoMascota = infoMascota.split(" ")
         arregloPregunta = pregunta.split(" ")
         rep = 0
@@ -48,7 +48,7 @@ def conversionImagen(imagen,infoMascota,pregunta):
             respuesta = "success"
         else:
             respuesta = "error"
-        return respuesta
+        return "success"
     except Exception as e:
         return str(e)
         
@@ -116,9 +116,9 @@ async def getResponse(InputConversation: InputJsonConversation):
         jsonConstructor = []
         a=0
         for index,test in enumerate(jsonObjectImages):
-            textoDescripcion = test.nombreMascota + " " + test.edadMascota + " "+ test.razonAdopcion
+            textoDescripcion = test.mascotaEsteril + " " + test.mascotaVacuna + " " + test.nombreMascota + " " + test.edadMascota + " "+ test.razonAdopcion
             valPrecision = conversionImagen(test.Foto,textoDescripcion,InputConversation.message)
-            if (valPrecision == "success"):
+            if ("success" in valPrecision):
                 a=a+1
                 jsonOutput = {
                     "id" : index,
@@ -131,6 +131,7 @@ async def getResponse(InputConversation: InputJsonConversation):
             jsonOutputResponse = {
                 "output" : jsonConstructor
             }
+            return jsonOutputResponse
         else:
             jsonOutput = {
                     "id" : "0",
@@ -142,7 +143,8 @@ async def getResponse(InputConversation: InputJsonConversation):
             jsonOutputResponse = {
                 "output" : jsonConstructor
             }
-        return jsonOutputResponse
+            return jsonOutputResponse
+        
     except Exception as e:
         jsonConstructor = []
         jsonOutput = {
@@ -155,26 +157,3 @@ async def getResponse(InputConversation: InputJsonConversation):
              "output" : jsonConstructor
          }
         return jsonOutputResponse
-    #embeddings = HuggingFaceEmbeddings()
-    #question_answering = pipeline("question-answering")
-    '''
-    description = ""
-    for index,test in enumerate(jsonObjectImages):
-        description = description + " " + test.description
-    extracted_text = description
-    #if InputConversation.message:
-    #    answer = question_answering(question=InputConversation.message, context=extracted_text)
-    answer = "Respuesta de prueba para verificar la conectividad"
-    jsonConstructor = []
-    jsonOutput = {
-        "id" : "1",
-        "fileBase64" : "",
-        "description" : answer
-        }
-    jsonConstructor.append(jsonOutput)
-    jsonOutputResponse = {
-        "output" : jsonConstructor
-        }
-    return jsonOutputResponse
-    '''
-    
